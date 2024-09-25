@@ -14,10 +14,11 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-    - name: Set up JDK 11
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
+        java-version: '17' # Specify the Java version you need
+        distribution: 'temurin' # Use the appropriate distribution
 
     - name: Install Flutter
       uses: subosito/flutter-action@v2
