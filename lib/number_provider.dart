@@ -6,14 +6,19 @@ class NumberProvider extends ChangeNotifier {
   bool isLoading = true;
   int totalCount = 0;
   double average = 0.0;
-  List<int> numbers = []; // List to store numbers
+  List<int> numbers = [];
 
   NumberProvider() {
-    fetchNumbers();
+    if (_client != null) {
+      fetchNumbers();
+    } else {
+      print('Supabase is not initialized yet');
+    }
   }
 
-  // Fetch numbers from the database
   Future<void> fetchNumbers() async {
+    isLoading = true;
+    notifyListeners();
     try {
       final List<dynamic> response =
           await _client.from('numbers').select('value');
@@ -26,36 +31,34 @@ class NumberProvider extends ChangeNotifier {
       print('Error fetching numbers: $e');
     } finally {
       isLoading = false;
-      notifyListeners(); // Notify listeners to update the UI
+      notifyListeners();
     }
   }
 
-  // Insert a new number into the database
   Future<void> insertNumber(int number) async {
+    isLoading = true;
+    notifyListeners();
     try {
-      await _client
-          .from('numbers')
-          .insert({'value': number}).select(); // Use select() to return data
-      fetchNumbers(); // Re-fetch numbers after inserting
+      await _client.from('numbers').insert({'value': number}).select();
+      await fetchNumbers(); // Ensure fetch completes
     } catch (e) {
       print('Error inserting number: $e');
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 
-  // Reset all numbers in the database
   Future<void> resetNumbers() async {
     try {
-      await _client.from('numbers').delete().neq('id', 0); // Delete all rows
+      await _client.from('numbers').delete().neq('id', 0);
       numbers.clear();
-      totalCount = 0;
-      average = 0.0;
-      notifyListeners(); // Notify listeners to update the UI
+      _calculateAverage();
     } catch (e) {
       print('Error resetting numbers: $e');
     }
   }
 
-  // Calculate the average of numbers
   void _calculateAverage() {
     totalCount = numbers.length;
     if (totalCount > 0) {
@@ -63,6 +66,7 @@ class NumberProvider extends ChangeNotifier {
     } else {
       average = 0.0;
     }
-    notifyListeners(); // Notify listeners to update the UI
+    notifyListeners();
   }
 }
+
