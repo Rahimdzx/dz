@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:caldz_new/main.dart'; // Adjust the package name if necessary
+import 'package:caldz/main.dart'; // Adjust the package name if necessary
 
 void main() {
   testWidgets('MyApp has a title and a button', (WidgetTester tester) async {
