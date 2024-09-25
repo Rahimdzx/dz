@@ -1,0 +1,20 @@
+name: caldz
+description: yesd
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  supabase_flutter: ^2.6.0
+  app_links: ^3.5.1
+  provider: ^6.0.0
+  rxdart: ^0.28.0
+  supabase: ^2.3.0
+  web_socket_channel: ^2.3.0
+  
+  # Plugins you were missing
+  shared_preferences: ^2.0.15
+  path_provider: ^2.0.11
+  url_launcher: ^6.1.7
